@@ -1,0 +1,8 @@
+"outboundProfiles" : {
+    "_default" : {
+      "routeType" : "policy",
+      "routePolicy" : "Routing",
+      "authenticationProfile" : "_default",
+      "parameters" : [ ]
+    }
+  }

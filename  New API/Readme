@@ -1,0 +1,45 @@
+This is a start workflow for import of the new API Jira tickets. 
+This is not finalized. It is only the MVP
+
+
+
+Import
+    check that swagger is attached
+    output expected results
+    check that owner
+    lead
+    service offering
+    dev
+    test
+    prod
+    project name
+    description
+    uri
+    new or existing
+    int, ext, or both?
+    Service Design - Optional
+        does it exist?
+        add it
+    auth method of backend
+    auth method for frontend
+    phi/pii
+
+1. pull down contents of request
+2. linter run on swagger file
+    if fail email to developer showing it has an issue
+    STOP
+3. run script to import items into jira
+    backlog status. nothing associated
+4. validate all fields are filled out. 
+    if not, flag as need more info
+5. validate dev backend url works
+    if not, flag as need more info
+6. validate results match up 
+    if not, flag as need more info
+7. add all info to the jira ticket
+8. if need more info flagged, 
+    put ticket in blocked status    
+    email customer with list of needed items
+9. If everything is ok  
+    email customer giving them their jira ticket
+    flag ticket as ready for pickup

@@ -1,0 +1,192 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1
+        },
+        "path": {
+            "type": "string",
+            "minLength": 1
+        },
+        "state": {
+            "type": "string",
+            "minLength": 1,
+            "default": "unpublished"
+        },
+        "version": {
+            "type": "string",
+            "minLength": 1
+        },
+        "organization": {
+            "type": "string",
+            "minLength": 1,
+            "default": "Centene Development"
+        },
+        "apiSpecification": {
+            "type": "object",
+            "properties": {
+                "resource": {
+                    "type": "string",
+                    "minLength": 1,
+                    "default": "swagger.json"
+                }
+            }
+        },
+        "backendBasepath": {
+            "type": "string",
+            "minLength": 1
+        },
+        "outboundProfiles": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "routeType": {
+                        "type": "string",
+                        "default": "proxy"
+                    },
+                    "faultHandlerPolicy": {
+                        "type": "string",
+                        "default": "Fault Handler"
+                    },
+                    "authenticationProfile": {
+                        "type": "string",
+                        "default": "_default"
+                    }
+                }
+            }
+        },
+        "securityProfiles": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "isDefault": {
+                        "type": "boolean"
+                    },
+                    "devices": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "order": {
+                                    "type": "integer"
+                                },
+                                "properties": {
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "type",
+                                "order",
+                                "properties"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "isDefault",
+                    "devices"
+                ]
+            }
+        },
+        "tags": {
+            "type": "object",
+            "properties": {
+                "bus-capability": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "resource": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "required": [
+                "bus-capability",
+                "resource"
+            ]
+        },
+        "caCerts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "certFile": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "inbound": {
+                        "type": "string",
+                        "minLength": 1,
+                        "enum": [
+                            "true",
+                            "false"
+                        ]
+                    },
+                    "outbound": {
+                        "type": "string",
+                        "minLength": 1,
+                        "enum": [
+                            "true",
+                            "false"
+                        ]
+                    }
+                },
+                "required": [
+                    "certFile",
+                    "inbound",
+                    "outbound"
+                ]
+            }
+        },
+        "clientOrganizations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "string",
+                "minLength": 1
+            }
+        }
+    },
+    "required": [
+        "name",
+        "path",
+        "state",
+        "version",
+        "organization",
+        "apiSpecification",
+        "backendBasepath",
+        "outboundProfiles",
+        "securityProfiles",
+        "tags",
+        "clientOrganizations"
+    ]
+}

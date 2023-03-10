@@ -1,0 +1,8 @@
+deploy:
+  variables:
+    UPSTREAM_CI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE
+    UPSTREAM_CI_PROJECT_NAME: $CI_PROJECT_NAME
+    UPSTREAM_CI_COMMIT_REF_NAME: $CI_COMMIT_REF_NAME
+  trigger:
+    project: api-management/axway
+    strategy: depend

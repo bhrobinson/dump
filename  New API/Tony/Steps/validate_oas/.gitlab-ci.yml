@@ -1,0 +1,123 @@
+stages:
+  - convert
+  - validate
+  - development
+  - test
+  - production
+
+variables:
+  API_USER: $K8S_API_USER
+  API_PASSWORD: $K8S_API_PASSWORD
+  API_MANAGER_HOST: $K8S_API_MANAGER_HOST
+
+convert_upstream:
+  stage: convert
+  image: ${BASE_CONTAINERS}/python:latest
+  before_script:
+    - pip install jsonschema
+  script:
+    - echo $UPSTREAM_CI_PROJECT_NAMESPACE
+    - echo $UPSTREAM_CI_PROJECT_NAME
+    - echo $UPSTREAM_CI_COMMIT_REF_NAME
+    - echo $CI_PIPELINE_SOURCE
+    - git clone -b $UPSTREAM_CI_COMMIT_REF_NAME https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${UPSTREAM_CI_PROJECT_NAMESPACE}/${UPSTREAM_CI_PROJECT_NAME}.git
+    - cd $UPSTREAM_CI_PROJECT_NAME
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'api_gateway.yaml$'); do echo "Converting file $file"; python3 $CI_PROJECT_DIR/tools/convert-v3.py $file $CI_PROJECT_DIR/json_schema/org-config-schema.json $CI_PROJECT_DIR/output/org-config-convert.json; done
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+      when: always
+  artifacts:
+    paths: [$CI_PROJECT_DIR/output/]
+
+convert:
+  stage: convert
+  image: ${BASE_CONTAINERS}/python:latest
+  before_script:
+    - pip install jsonschema pyaml
+    - mkdir $CI_PROJECT_DIR/output
+  script:
+    - cd $CI_PROJECT_DIR
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'api_gateway.yaml$'); do echo "Making directory $(dirname $file)"; mkdir output/$(dirname $file); done
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'api_gateway.yaml$'); do echo "Converting file $file"; python3 tools/convert-v3.py $file json_schema/org-config-schema.json output/$(dirname $file)/org-config.json; done
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "**/*.yaml"
+      when: always
+  artifacts:
+    paths: [$CI_PROJECT_DIR/output/]
+
+validate:
+  stage: validate
+  image: ${BASE_CONTAINERS}/python:latest
+  before_script:
+    - pip install jsonschema
+  script:
+    - cd $CI_PROJECT_DIR
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'org-config.json$'); do echo "Validating file $file"; python validate.py "$file" org-config-schema.json; done
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'api-config.json$'); do echo "Validating file $file"; python validate.py "$file" api-config-schema.json; done
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'swagger.json$'); do echo "Validating file $file"; python validate.py "$file" swagger-schema.json; done
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "**/*.ttt"
+  when: always
+  needs: ["convert"]
+  artifacts:
+    paths: [$CI_PROJECT_DIR/output/]
+
+development_add_org:
+  stage: development
+  image:
+    name: $IMAGE
+  script:
+    - cd $CI_PROJECT_DIR
+    - find output -name 'org-config.json'
+    - for file in $(find output -name 'org-config.json'); do apim.sh org import -c $file -h $API_MANAGER_HOST -port 443 -u $API_USER -p $API_PASSWORD -validateRemoteHost false -rollback false; done
+  environment:
+    name: development
+  needs: ["convert"]
+  artifacts:
+    paths: [$CI_PROJECT_DIR/output/]
+
+development_add_api:
+  stage: development
+  image: $CI_REGISTRY_IMAGE:apimcli-1.13.2
+  script:
+    - cd $CI_PROJECT_DIR
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep 'api-config.json$'); do apim.sh api import -a $(dirname $file)/swagger.json -c $(dirname $file)/api-config.json -h $API_MANAGER_HOST -port 443 -u $API_USER -p $API_PASSWORD -validateRemoteHost false -rollback false -useFEAPIDefinition;done
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'development'
+      changes:
+        - "**/*.json"
+  environment:
+    name: development
+  needs: ["development_add_org", "validate"]
+
+test:
+  stage: test
+  image: $CI_REGISTRY_IMAGE:apimcli-1.13.2
+  script:
+    - cd $CI_PROJECT_DIR
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep '\.json$'); do echo $(dirname $file);done
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^test/
+      changes:
+        - "**/*.json"
+      when: manual
+      allow_failure: false
+  environment:
+    name: test
+
+production:
+  stage: production
+  image: $CI_REGISTRY_IMAGE:apimcli-1.13.2
+  script:
+    - cd $CI_PROJECT_DIR
+    - for file in $(git diff --name-only HEAD~1 HEAD | grep '\.json$'); do echo $(dirname $file);done
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^production/
+      when: manual
+      allow_failure: false
+  environment:
+    name: production

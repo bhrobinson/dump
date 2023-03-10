@@ -1,0 +1,6 @@
+"outboundProfiles" : {
+    "_default" : {
+      "routeType" : "proxy",
+      "faultHandlerPolicy" : "Fault Handler",
+      "authenticationProfile" : "_default"
+    }

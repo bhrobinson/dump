@@ -1,0 +1,287 @@
+{
+	"info": {
+		"title": "Aviatrix Test",
+		"version": "1.0",
+		"summary": "Aviatrix-test",
+		"description": "Aviatrix test API",
+		"contact": {
+			"name": "Tony Cirami",
+			"email": "acirami@centene.com"
+		}
+	},
+	"item": [
+		{
+			"name": "Log into Controller & Get CID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\",function (){",
+							"pm.response.to.have.status(200);",
+							"});",
+							"let json_obj = pm.response.json();",
+							"let cid = json_obj[\"CID\"];",
+							"console.log(\"Hello, CID we got is:\"+ cid);",
+							"pm.environment.set(\"CID\",cid);",
+							"pm.globals.set(\"CID\",\"abc\");",
+							"console.log(\"Environment-Variable [CID] is: \"+ pm.environment.get(\"CID\"));",
+							"console.log(\"Global-Variable [CID] is: \"+ pm.globals.get(\"CID\"));",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "action",
+							"value": "login",
+							"description": "### Description\nIndicating type of API to call.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"login\"\n\n\n### Default Value\nNone",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"description": "### Description\nIndicating type of API to call.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"admin\"\n\n\n### Default Value\nNone\n\n",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"description": "### Description\nIndicating type of API to call.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"login\"\n\n\n### Default Value\nNone\n\n",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{controller_hostname}}/v1/api",
+					"protocol": "https",
+					"host": [
+						"{{controller_hostname}}"
+					],
+					"path": [
+						"v1",
+						"api"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Successfully Log into Controller & Get CID",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "login",
+									"description": "### Description\nIndicating type of API to call.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"login\"\n\n\n### Default Value\nNone",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"description": "### Description\nIndicating type of API to call.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"admin\"\n\n\n### Default Value\nNone\n\n",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{admin_password}}",
+									"description": "### Description\nIndicating type of API to call.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"login\"\n\n\n### Default Value\nNone\n\n",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{controller_hostname}}/v1/api",
+							"protocol": "https",
+							"host": [
+								"{{controller_hostname}}"
+							],
+							"path": [
+								"v1",
+								"api"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 27 Aug 2019 21:46:04 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=77760000"
+						},
+						{
+							"key": "Content-Length",
+							"value": "187"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/json;charset=UTF-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\"return\":true,\n\"results\":\"User login:admin in account:admin has been authorized successfully on controller 123.123.123.123. - Please check email confirmation.\",\n\"CID\":\"abcdef1234zwvqJyuhM6\"\n}"
+				}
+			]
+		},
+		{
+			"name": "List Accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{controller_hostname}}/v1/api?action=list_accounts&CID={{CID}}&aws_iam_role_based=",
+					"protocol": "https",
+					"host": [
+						"{{controller_hostname}}"
+					],
+					"path": [
+						"v1",
+						"api"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "list_accounts",
+							"description": "### Description\n+ This parameter indicates which Aviatrix API is being invoked.\n\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"list_accounts\"\n\n\n### Default Value\nNone"
+						},
+						{
+							"key": "CID",
+							"value": "{{CID}}",
+							"description": "### Description\nThe session id (API key) that was returned during login.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Default Value\nNone"
+						},
+						{
+							"key": "aws_iam_role_based",
+							"value": "",
+							"description": "### Description\nIndicating whether it's AWS IAM role based\n\n###Required\nYES \n\n\n### Type\nBoolean\n\n\n### Valid Value(s) / Example(s)\ntrue, false\n\n\n### Default Value\ntrue"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Accounts",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{controller_hostname}}/v1/api?action=list_accounts&CID={{CID}}&aws_iam_role_based=",
+							"protocol": "https",
+							"host": [
+								"{{controller_hostname}}"
+							],
+							"path": [
+								"v1",
+								"api"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "list_accounts",
+									"description": "### Description\nIndicating type of API to call\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Valid Value(s) / Example(s)\n\"list_accounts\"\n\n\n### Default Value\nNone"
+								},
+								{
+									"key": "CID",
+									"value": "{{CID}}",
+									"description": "### Description\nThe session id (API key) that was returned during login.\n\n\n###Required\nYES\n\n\n### Type\nString\n\n\n### Default Value\nNone"
+								},
+								{
+									"key": "aws_iam_role_based",
+									"value": "",
+									"description": "### Description\nIndicating whether it's AWS IAM role based\n\n###Required\nYES \n\n\n### Type\nBoolean\n\n\n### Valid Value(s) / Example(s)\ntrue, false\n\n\n### Default Value\ntrue"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 09 Jul 2019 22:18:31 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=77760000"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2513"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/json;charset=UTF-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\"return\":true,\n\"results\":{\n\"account_list\":[\n{\n\"awschinacloud_access_key\":\"\",\n\"aws_gov_aws_role_ec2\":\"\",\n\"trail_status\":null,\n\"aws_gov_aws_role_arn\":\"\",\n\"account_secret_access_key\":\"\",\n\"aws_china_aws_role_arn\":\"\",\n\"awsgovcloud_account_number\":\"\",\n\"cloud_type\":1,\n\"azurechinacloud_subscription_id\":\"\",\n\"account_name\":\"BenjaminHuang\",\n\"aws_china_aws_role_ec2\":\"\",\n\"awschinacloud_secret_key\":\"\",\n\"sqs_name\":\"\",\n\"account_email_addr\":\"john@gmail.com\",\n\"account_access_key\":\"\",\n\"awsgovcloud_access_key\":\"\",\n\"aws_role_ec2\":\"arn:aws:iam::12345678910:role/aviatrix-role-ec2\",\n\"azure_subscription_id\":\"\",\n\"aws_role_arn\":\"arn:aws:iam::12345678910:role/aviatrix-role-app\",\n\"awschinacloud_trail_status\":\"\",\n\"azure_cert_path\":\"\",\n\"awsgovcloud_secret_key\":\"\",\n\"awschinacloud_account_number\":\"\",\n\"project\":\"\",\n\"account_password\":\"\",\n\"azurechinacloud_cert_path\":\"\",\n\"account_number\":\"12345678910\"\n},\n{\n\"awschinacloud_access_key\":\"\",\n\"aws_gov_aws_role_ec2\":\"\",\n\"trail_status\":null,\n\"aws_gov_aws_role_arn\":\"\",\n\"account_secret_access_key\":\"\",\n\"aws_china_aws_role_arn\":\"\",\n\"awsgovcloud_account_number\":\"\",\n\"cloud_type\":1,\n\"azurechinacloud_subscription_id\":\"\",\n\"account_name\":\"Fred1\",\n\"aws_china_aws_role_ec2\":\"\",\n\"awschinacloud_secret_key\":\"\",\n\"sqs_name\":\"\",\n\"account_email_addr\":\"john-smith@gmail.com\",\n\"account_access_key\":\"AJDOFJEO39i32MDHJ\",\n\"awsgovcloud_access_key\":\"\",\n\"aws_role_ec2\":null,\n\"azure_subscription_id\":\"\",\n\"aws_role_arn\":null,\n\"awschinacloud_trail_status\":\"\",\n\"azure_cert_path\":\"\",\n\"awsgovcloud_secret_key\":\"\",\n\"awschinacloud_account_number\":\"\",\n\"project\":\"\",\n\"account_password\":\"\",\n\"azurechinacloud_cert_path\":\"\",\n\"account_number\":\"\"\n}\n\n \n]\n}\n}"
+				}
+			]
+		}
+	]
+}

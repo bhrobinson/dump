@@ -1,0 +1,9 @@
+{
+  "name": "AVX-TEST1",
+  "enabled": true,
+  "description": "Org owns the development and management of the domain APIs.",
+  "email": "avxtest1@gmail.com",
+  "restricted": false,
+  "development": true,
+  "apis": []
+}

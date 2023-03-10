@@ -1,0 +1,319 @@
+openapi: 3.0.0
+info:
+  description: Aviatrix test API
+  version: 1.0.0
+servers:
+  - url: https://{{controller_hostname}}
+paths:
+  /v1/api:
+    post:
+      tags:
+        - default
+      summary: Log into Controller & Get CID
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  description: |-
+                    ### Description
+                    Indicating type of API to call.
+
+
+                    ###Required
+                    YES
+
+
+                    ### Type
+                    String
+
+
+                    ### Valid Value(s) / Example(s)
+                    "login"
+
+
+                    ### Default Value
+                    None
+                  example: login
+                username:
+                  type: string
+                  description: |+
+                    ### Description
+                    Indicating type of API to call.
+
+
+                    ###Required
+                    YES
+
+
+                    ### Type
+                    String
+
+
+                    ### Valid Value(s) / Example(s)
+                    "admin"
+
+
+                    ### Default Value
+                    None
+
+                  example: '{{username}}'
+                password:
+                  type: string
+                  description: |+
+                    ### Description
+                    Indicating type of API to call.
+
+
+                    ###Required
+                    YES
+
+
+                    ### Type
+                    String
+
+
+                    ### Valid Value(s) / Example(s)
+                    "login"
+
+
+                    ### Default Value
+                    None
+
+                  example: '{{password}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 27 Aug 2019 21:46:04 GMT
+            Server:
+              schema:
+                type: string
+                example: Apache
+            Cache-Control:
+              schema:
+                type: string
+                example: no-store
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=77760000
+            Content-Length:
+              schema:
+                type: integer
+                example: '187'
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5, max=100
+            Connection:
+              schema:
+                type: string
+                example: Keep-Alive
+            Content-Type:
+              schema:
+                type: string
+                example: text/json;charset=UTF-8
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                return: true
+                results: >-
+                  User login:admin in account:admin has been authorized
+                  successfully on controller 123.123.123.123. - Please check
+                  email confirmation.
+                CID: abcdef1234zwvqJyuhM6
+    get:
+      tags:
+        - default
+      summary: List Accounts
+      parameters:
+        - name: action
+          in: query
+          schema:
+            type: string
+          description: |-
+            ### Description
+            + This parameter indicates which Aviatrix API is being invoked.
+
+
+
+            ###Required
+            YES
+
+
+            ### Type
+            String
+
+
+            ### Valid Value(s) / Example(s)
+            "list_accounts"
+
+
+            ### Default Value
+            None
+          example: list_accounts
+        - name: CID
+          in: query
+          schema:
+            type: string
+          description: |-
+            ### Description
+            The session id (API key) that was returned during login.
+
+
+            ###Required
+            YES
+
+
+            ### Type
+            String
+
+
+            ### Default Value
+            None
+          example: '{{CID}}'
+        - name: aws_iam_role_based
+          in: query
+          schema:
+            type: string
+          description: |-
+            ### Description
+            Indicating whether it's AWS IAM role based
+
+            ###Required
+            YES 
+
+
+            ### Type
+            Boolean
+
+
+            ### Valid Value(s) / Example(s)
+            true, false
+
+
+            ### Default Value
+            true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 09 Jul 2019 22:18:31 GMT
+            Server:
+              schema:
+                type: string
+                example: Apache
+            Cache-Control:
+              schema:
+                type: string
+                example: no-store
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=77760000
+            Content-Length:
+              schema:
+                type: integer
+                example: '2513'
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5, max=100
+            Connection:
+              schema:
+                type: string
+                example: Keep-Alive
+            Content-Type:
+              schema:
+                type: string
+                example: text/json;charset=UTF-8
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                return: true
+                results:
+                  account_list:
+                    - awschinacloud_access_key: ''
+                      aws_gov_aws_role_ec2: ''
+                      trail_status: null
+                      aws_gov_aws_role_arn: ''
+                      account_secret_access_key: ''
+                      aws_china_aws_role_arn: ''
+                      awsgovcloud_account_number: ''
+                      cloud_type: 1
+                      azurechinacloud_subscription_id: ''
+                      account_name: BenjaminHuang
+                      aws_china_aws_role_ec2: ''
+                      awschinacloud_secret_key: ''
+                      sqs_name: ''
+                      account_email_addr: john@gmail.com
+                      account_access_key: ''
+                      awsgovcloud_access_key: ''
+                      aws_role_ec2: arn:aws:iam::12345678910:role/aviatrix-role-ec2
+                      azure_subscription_id: ''
+                      aws_role_arn: arn:aws:iam::12345678910:role/aviatrix-role-app
+                      awschinacloud_trail_status: ''
+                      azure_cert_path: ''
+                      awsgovcloud_secret_key: ''
+                      awschinacloud_account_number: ''
+                      project: ''
+                      account_password: ''
+                      azurechinacloud_cert_path: ''
+                      account_number: '12345678910'
+                    - awschinacloud_access_key: ''
+                      aws_gov_aws_role_ec2: ''
+                      trail_status: null
+                      aws_gov_aws_role_arn: ''
+                      account_secret_access_key: ''
+                      aws_china_aws_role_arn: ''
+                      awsgovcloud_account_number: ''
+                      cloud_type: 1
+                      azurechinacloud_subscription_id: ''
+                      account_name: Fred1
+                      aws_china_aws_role_ec2: ''
+                      awschinacloud_secret_key: ''
+                      sqs_name: ''
+                      account_email_addr: john-smith@gmail.com
+                      account_access_key: AJDOFJEO39i32MDHJ
+                      awsgovcloud_access_key: ''
+                      aws_role_ec2: null
+                      azure_subscription_id: ''
+                      aws_role_arn: null
+                      awschinacloud_trail_status: ''
+                      azure_cert_path: ''
+                      awsgovcloud_secret_key: ''
+                      awschinacloud_account_number: ''
+                      project: ''
+                      account_password: ''
+                      azurechinacloud_cert_path: ''
+                      account_number: ''

@@ -1,0 +1,8 @@
+"outboundProfiles" : {
+    "_default" : {
+      "routeType" : "policy",
+      "routePolicy" : "Routing with Auth",
+      "faultHandlerPolicy" : "Fault Handler",
+      "authenticationProfile" : "_default",
+      "parameters" : [ ]
+    }

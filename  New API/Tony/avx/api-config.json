@@ -1,0 +1,41 @@
+{
+    "name": "Aviatrix",
+    "path": "/aviatrix",
+    "state": "published",
+    "version": "1.1",
+    "organization": "AVX-TEST1",
+    "apiDefinition": "swagger.json",
+    "backendBasepath": "https://aviatrixctr.sharedservices.tst.enterprise.aws-test.centene.com/",
+    "tags": {
+        "appid": [
+            "avxx"
+        ],
+        "approle": [
+            "Axway API"
+        ],
+        "environment": [
+            "dev"
+        ],
+        "version": [
+            "1.0"
+        ],
+        "opt-in_opt-out": [
+            "opt-in"
+        ],
+        "created by": [
+            "API team"
+        ],
+        "owner": [
+            "API"
+        ],
+        "CostCenter Business Unit": [
+            "InfraAppDev"
+        ],
+        "Project": [
+            "Project"
+        ],
+        "Classification": [
+            "internal"
+        ]
+    }
+}

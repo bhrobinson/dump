@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Org Config",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the organization",
+      "minLength": 1
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Indicates whether the organization is enabled",
+      "default": true
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the organization",
+      "minLength": 1,
+      "default": "Org owns the development and management of the domain APIs."
+    },
+    "email": {
+      "type": "string",
+      "description": "The email address of the organization",
+      "format": "email"
+    },
+    "restricted": {
+      "type": "boolean",
+      "description": "Indicates whether the organization is restricted",
+      "default": false
+    },
+    "development": {
+      "type": "boolean",
+      "description": "Indicates whether the organization is in development mode",
+      "default": true
+    },
+    "apis": {
+      "type": "array",
+      "description": "A list of APIs owned by the organization",
+      "items": {
+        "type": "object",
+        "properties": {
+          "apiName": {
+            "type": "string",
+            "description": "The name of the API",
+            "minLength": 1
+          },
+          "apiVersion": {
+            "type": "string",
+            "description": "The version of the API",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "apiName",
+          "apiVersion"
+        ]
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "name",
+    "enabled",
+    "description",
+    "email",
+    "restricted",
+    "development",
+    "apis"
+  ]
+}

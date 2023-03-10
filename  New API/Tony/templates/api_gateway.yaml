@@ -1,0 +1,47 @@
+name: TESTNAME #name of API
+email: test@gmail.com
+path: /cob #location of API from Axway ex: https://api-gateway-01.centene.com/cob
+businessFunction: Billing # array provided for selection
+organization: ClaimsRTR # Axway based organization. Directly correlates to AD Groups of the producer. In the security group: Axway_{org}_{role}_{NonProd|Prod}
+isPublicData: true #true or false 
+security:
+  - 
+    type: oauth 
+    issuerName: PingCloudFront # or O365 or etc...
+  - 
+    type: apiKey
+    outboundCredentials: s.KzDMET1zeUA10qi4jEg9YKml
+  #- type: centeneHealthPlatform # chp
+openApiUrl: https://claims-rtr-cob.ckp-test.centene.com/apidocs # swagger location
+technologyService: Web & Mobile # Technology Service in ServiceNow
+domainCategory: Claims
+businessCapability: Billing # taxonomy outlined from EA
+shareToOrganizations:
+  - centene # everyone
+  - ClaimsRTR # specific org
+endpoints: 
+  dev: https://claims-rtr-cob.ckp-dev.centene.com
+  test: https://claims-rtr-cob.ckp-test.centene.com
+  prod: https://claims-rtr-cob.ckp.centene.com #locations the back end is published 
+  preprod: https://claims-rtr-cob-preprod.ckp-test.centene.com
+  uat: https://claims-rtr-cob-uat.ckp-test.centene.com
+  sandbox: https://claims-rtr-cob-sandbox.ckp.centene.com
+willBeExposedToInternet: false #Do we publish to the DMZ
+requiresCrossOriginRequests: true # true if you want to expose CORS
+
+
+# Guiding Principles
+## No http routes, everything must be https
+## Internal tokens must be JWTs
+## On the burden of the Producer team to create a secret for API Key enforcement
+## GraphQL out-of-scope for this automation
+
+# Documentation 
+## Document how a team can request an additional identity provider to Axway for OAUTH
+
+# Coming Soon
+## We have to connect service now to Axway Organization Ownership
+## Versioning 
+## Promotion
+## Existing API Migration
+## Define guardrails 
